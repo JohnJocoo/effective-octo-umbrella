@@ -6,15 +6,18 @@
     alt={"#{@recipe.title} image"}
   />
   <div class="recipe_description">
-    <h2> <%= @recipe.title %> </h2>
     <%= @recipe.description %>
   </div>
-  <div class="recipe_author">
-    By: <%= @recipe.chef_name %>
-  </div>
-  <div class="recipe_tags">
-    Tags: <%= Enum.join(@recipe.tags, ", ") %>
-  </div>
+  <%= if @recipe.chef_name != nil do %>
+    <div class="recipe_author">
+      By: <%= @recipe.chef_name %>
+    </div>
+  <%= end %>
+  <%= if @recipe.tags != [] do %>
+    <div class="recipe_tags">
+      Tags: <%= Enum.join(@recipe.tags, ", ") %>
+    </div>
+  <%= end %>
 </div>
 
-<span><%= live_redirect "Return to all recipes", to: Routes.recipe_index_path(@socket, :index) %></span>
+<span class="recipe_back"><%= live_redirect "Return to all recipes", to: Routes.recipe_index_path(@socket, :index) %></span>

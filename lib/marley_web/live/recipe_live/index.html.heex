@@ -10,9 +10,11 @@
             alt={"#{recipe.title} image"}
           />
         </a>
-        <a href={Routes.recipe_show_path(@socket, :show, recipe)}>
-          <%= recipe.title %>
-        </a>
+        <div class="recipe-title">
+          <a href={Routes.recipe_show_path(@socket, :show, recipe)}>
+            <%= recipe.title %>
+          </a>
+        </div>
       </div>
     <% end %>
   </div>
