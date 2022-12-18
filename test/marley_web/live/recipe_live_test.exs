@@ -1,8 +1,11 @@
 defmodule MarleyWeb.RecipeLiveTest do
   use MarleyWeb.ConnCase
-
   import Phoenix.LiveViewTest
   import Marley.RecipesFixtures
+  import Mock
+
+  alias Marley.Recipe
+  alias Marley.RecipesData
 
   @create_attrs %{chef_name: "some chef_name", description: "some description", image_url: "some image_url", tags: [], title: "some title"}
   @update_attrs %{chef_name: "some updated chef_name", description: "some updated description", image_url: "some updated image_url", tags: [], title: "some updated title"}
@@ -17,94 +20,25 @@ defmodule MarleyWeb.RecipeLiveTest do
     setup [:create_recipe]
 
     test "lists all recipes", %{conn: conn, recipe: recipe} do
-      {:ok, _index_live, html} = live(conn, Routes.recipe_index_path(conn, :index))
+      with_mock RecipesData, [preview_get_all: fn -> [recipe] end] do
+        {:ok, _index_live, html} = live(conn, Routes.recipe_index_path(conn, :index))
 
-      assert html =~ "Listing Recipes"
-      assert html =~ recipe.chef_name
-    end
-
-    test "saves new recipe", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, Routes.recipe_index_path(conn, :index))
-
-      assert index_live |> element("a", "New Recipe") |> render_click() =~
-               "New Recipe"
-
-      assert_patch(index_live, Routes.recipe_index_path(conn, :new))
-
-      assert index_live
-             |> form("#recipe-form", recipe: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      {:ok, _, html} =
-        index_live
-        |> form("#recipe-form", recipe: @create_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.recipe_index_path(conn, :index))
-
-      assert html =~ "Recipe created successfully"
-      assert html =~ "some chef_name"
-    end
-
-    test "updates recipe in listing", %{conn: conn, recipe: recipe} do
-      {:ok, index_live, _html} = live(conn, Routes.recipe_index_path(conn, :index))
-
-      assert index_live |> element("#recipe-#{recipe.id} a", "Edit") |> render_click() =~
-               "Edit Recipe"
-
-      assert_patch(index_live, Routes.recipe_index_path(conn, :edit, recipe))
-
-      assert index_live
-             |> form("#recipe-form", recipe: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      {:ok, _, html} =
-        index_live
-        |> form("#recipe-form", recipe: @update_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.recipe_index_path(conn, :index))
-
-      assert html =~ "Recipe updated successfully"
-      assert html =~ "some updated chef_name"
-    end
-
-    test "deletes recipe in listing", %{conn: conn, recipe: recipe} do
-      {:ok, index_live, _html} = live(conn, Routes.recipe_index_path(conn, :index))
-
-      assert index_live |> element("#recipe-#{recipe.id} a", "Delete") |> render_click()
-      refute has_element?(index_live, "#recipe-#{recipe.id}")
+        assert html =~ "Listing Recipes"
+        assert html =~ recipe.title
+      end
     end
   end
 
   describe "Show" do
     setup [:create_recipe]
 
-    test "displays recipe", %{conn: conn, recipe: recipe} do
-      {:ok, _show_live, html} = live(conn, Routes.recipe_show_path(conn, :show, recipe))
+    test "displays recipe", %{conn: conn, recipe: %Recipe{id: id} = recipe} do
+      with_mock RecipesData, [fetch_by_id!: fn ^id -> recipe end] do
+        {:ok, _show_live, html} = live(conn, Routes.recipe_show_path(conn, :show, recipe))
 
-      assert html =~ "Show Recipe"
-      assert html =~ recipe.chef_name
-    end
-
-    test "updates recipe within modal", %{conn: conn, recipe: recipe} do
-      {:ok, show_live, _html} = live(conn, Routes.recipe_show_path(conn, :show, recipe))
-
-      assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Recipe"
-
-      assert_patch(show_live, Routes.recipe_show_path(conn, :edit, recipe))
-
-      assert show_live
-             |> form("#recipe-form", recipe: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      {:ok, _, html} =
-        show_live
-        |> form("#recipe-form", recipe: @update_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.recipe_show_path(conn, :show, recipe))
-
-      assert html =~ "Recipe updated successfully"
-      assert html =~ "some updated chef_name"
+        assert html =~ "Show Recipe"
+        assert html =~ recipe.title
+      end
     end
   end
 end

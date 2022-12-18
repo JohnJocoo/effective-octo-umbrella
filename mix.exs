@@ -51,7 +51,8 @@ defmodule Marley.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:contentful, "~> 0.4.0"},
       {:earmark, "~> 1.4"},
-      {:secrex, "~> 0.3", runtime: false}
+      {:secrex, "~> 0.3", runtime: false},
+      {:mock, "~> 0.3.0", only: :test}
     ]
   end
 

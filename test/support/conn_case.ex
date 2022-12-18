@@ -32,7 +32,6 @@ defmodule MarleyWeb.ConnCase do
   end
 
   setup tags do
-    Marley.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
