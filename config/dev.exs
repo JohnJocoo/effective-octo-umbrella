@@ -1,15 +1,5 @@
 import Config
 
-# Configure your database
-config :marley, Marley.Repo,
-  username: "marley_dev",
-  password: "sdfjnbk45546tg4r",
-  hostname: "localhost",
-  database: "marley_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

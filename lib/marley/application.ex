@@ -8,8 +8,6 @@ defmodule Marley.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
-      Marley.Repo,
       # Start the Telemetry supervisor
       MarleyWeb.Telemetry,
       # Start the PubSub system

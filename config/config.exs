@@ -7,8 +7,6 @@
 # General application configuration
 import Config
 
-config :marley,
-  ecto_repos: [Marley.Repo]
 
 # Configures the endpoint
 config :marley, MarleyWeb.Endpoint,
