@@ -49,7 +49,8 @@ defmodule Marley.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:contentful, "~> 0.4.0"}
+      {:contentful, "~> 0.4.0"},
+      {:earmark, "~> 1.4"}
     ]
   end
 

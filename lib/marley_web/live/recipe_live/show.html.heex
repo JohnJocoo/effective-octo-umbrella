@@ -6,18 +6,18 @@
     alt={"#{@recipe.title} image"}
   />
   <div class="recipe_description">
-    <%= @recipe.description %>
+    <%= raw(Earmark.as_html!(@recipe.description)) %>
   </div>
-  <%= if @recipe.chef_name != nil do %>
+  <% if @recipe.chef_name != nil do %>
     <div class="recipe_author">
       By: <%= @recipe.chef_name %>
     </div>
-  <%= end %>
-  <%= if @recipe.tags != [] do %>
+  <% end %>
+  <% if @recipe.tags != [] do %>
     <div class="recipe_tags">
       Tags: <%= Enum.join(@recipe.tags, ", ") %>
     </div>
-  <%= end %>
+  <% end %>
 </div>
 
 <span class="recipe_back"><%= live_redirect "Return to all recipes", to: Routes.recipe_index_path(@socket, :index) %></span>
