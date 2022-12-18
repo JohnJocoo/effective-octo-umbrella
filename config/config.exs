@@ -50,3 +50,19 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+secrets_file = "config/#{config_env()}.secrets.exs"
+if File.exists?(secrets_file) do
+  import_config "#{config_env()}.secrets.exs"
+else
+  if config_env() != "test" do
+    IO.puts(
+      IO.ANSI.yellow() <>
+      "[warning] #{secrets_file} config file doesn't exist. Did you forget to decrypt secrets?" <>
+      IO.ANSI.reset()
+    )
+  end
+end
+
+config :secrex,
+  files: ["config/prod.secrets.exs", "config/dev.secrets.exs"]

@@ -6,10 +6,10 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :marley, Marley.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "marley_dev",
+  password: "sdfjnbk45546tg4r",
   hostname: "localhost",
-  database: "marley_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "marley_dev",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 

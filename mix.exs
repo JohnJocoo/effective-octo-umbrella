@@ -50,7 +50,8 @@ defmodule Marley.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:contentful, "~> 0.4.0"},
-      {:earmark, "~> 1.4"}
+      {:earmark, "~> 1.4"},
+      {:secrex, "~> 0.3", runtime: false}
     ]
   end
 

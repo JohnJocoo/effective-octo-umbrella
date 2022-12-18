@@ -35,3 +35,7 @@ npm-debug.log
 # IntelliJ IDEA
 /.idea
 /marley.iml
+
+# Secrets
+dev.secrets.exs
+prod.secrets.exs
