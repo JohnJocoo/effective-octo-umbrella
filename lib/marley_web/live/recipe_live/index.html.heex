@@ -1,0 +1,19 @@
+<h1>Recipes</h1>
+
+<%= for recipes_chunk <- Enum.chunk_every(@recipes, 3) do %>
+  <div class="row">
+    <%= for recipe <- recipes_chunk do %>
+      <div class="recipe">
+        <a href={Routes.recipe_show_path(@socket, :show, recipe)}>
+          <img
+            src={if recipe.image_url != nil, do: recipe.image_url, else: Routes.static_path(@socket, "/images/no_image.png")}
+            alt={"#{recipe.title} image"}
+          />
+        </a>
+        <a href={Routes.recipe_show_path(@socket, :show, recipe)}>
+          <%= recipe.title %>
+        </a>
+      </div>
+    <% end %>
+  </div>
+<% end %>

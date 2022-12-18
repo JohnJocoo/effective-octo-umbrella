@@ -1,0 +1,20 @@
+<h1><%= @recipe.title %></h1>
+
+<div class="recipe_full">
+  <img
+    src={if @recipe.image_url != nil, do: @recipe.image_url, else: Routes.static_path(@socket, "/images/no_image.png")}
+    alt={"#{@recipe.title} image"}
+  />
+  <div class="recipe_description">
+    <h2> <%= @recipe.title %> </h2>
+    <%= @recipe.description %>
+  </div>
+  <div class="recipe_author">
+    By: <%= @recipe.chef_name %>
+  </div>
+  <div class="recipe_tags">
+    Tags: <%= Enum.join(@recipe.tags, ", ") %>
+  </div>
+</div>
+
+<span><%= live_redirect "Return to all recipes", to: Routes.recipe_index_path(@socket, :index) %></span>

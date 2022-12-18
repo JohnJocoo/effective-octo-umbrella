@@ -18,6 +18,8 @@ defmodule MarleyWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/recipes", RecipeLive.Index, :index
+    live "/recipes/:id", RecipeLive.Show, :show
   end
 
   # Other scopes may use custom stacks.
