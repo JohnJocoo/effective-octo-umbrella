@@ -1,0 +1,21 @@
+name: Fly Deploy App
+
+on:
+  workflow_run:
+    workflows: [ "Build and Test" ]
+    types: [ completed ]
+    branches: [ "main" ]
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+jobs:
+  deploy:
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
+      name: Deploy Marley Spoon app
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: superfly/flyctl-actions/setup-flyctl@master
+        - run: flyctl deploy --remote-only --build-args MARLEY_SECRETS_KEY="${{ secrets.MARLEY_SECRETS_KEY }}"
+
