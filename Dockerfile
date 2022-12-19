@@ -40,7 +40,7 @@ ENV MIX_ENV="prod"
 # install mix dependencies
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only $MIX_ENV
-RUN  sh -c 'echo ${MARLEY_SECRETS_KEY} | mix secrex.decrypt'
+RUN sh -c 'echo $MARLEY_SECRETS_KEY | mix secrex.decrypt'
 RUN mkdir config
 
 # copy compile-time config files before we compile dependencies
