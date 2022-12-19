@@ -16,7 +16,16 @@ Docker image is build by GH actions on commit to main.
 
 You can build it yourself by:
 
-    cbsbvsbfsfdb
+    docker build --build-arg MARLEY_SECRETS_KEY=_secret_key_ .
+
+Alternatively you can build an Elixir/Erlang release with
+
+    mix deps.get --only prod
+    mix secrex.decrypt (provide secret_key)
+    mix deps.compile
+    mix assets.deploy
+    mix compile
+    mix release
 
 ## Deploying
 
@@ -24,4 +33,8 @@ After Docker image build by GH pipeline, it is deployed to [Fly.io](https://fly.
 
 You can deploy it yourself with fly.io cli tools
 
-    dmf,bvskjdnv
+    fly deploy --build-arg MARLEY_SECRETS_KEY=_secret_key_
+
+Please note that on first deploy to Fly.io you will need to create an app on platform
+
+    fly launch --no-deploy
