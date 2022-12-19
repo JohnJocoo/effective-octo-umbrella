@@ -2,6 +2,8 @@
 
 ## Developing
 
+Requires Elixir >= 1.13 and OTP >= 24
+
 To start your development server:
 
   * Install dependencies with `mix deps.get`
