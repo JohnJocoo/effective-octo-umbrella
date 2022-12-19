@@ -20,7 +20,6 @@ ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-$
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
 ARG MARLEY_SECRETS_KEY=""
-ENV MARLEY_SECRETS_KEY=${MARLEY_SECRETS_KEY}
 
 FROM ${BUILDER_IMAGE} as builder
 
@@ -41,13 +40,13 @@ ENV MIX_ENV="prod"
 # install mix dependencies
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only $MIX_ENV
-RUN echo ${MARLEY_SECRETS_KEY} | mix secrex.decrypt
+RUN  sh -c 'echo ${MARLEY_SECRETS_KEY} | mix secrex.decrypt'
 RUN mkdir config
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY config/config.exs config/${MIX_ENV}.exs config/${MIX_ENV}.secret.exs config/
+COPY config/config.exs config/${MIX_ENV}.exs config/${MIX_ENV}.secrets.exs config/
 RUN mix deps.compile
 
 COPY priv priv
@@ -65,7 +64,6 @@ RUN mix compile
 # Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
 
-COPY rel rel
 RUN mix release
 
 # start a new build stage so that the final image will only contain
@@ -93,7 +91,8 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/marley ./
 
 USER nobody
 
-CMD ["/app/bin/server"]
+ENV PHX_SERVER=true
+CMD ["/app/bin/marley", "start"]
 # Appended by flyctl
 ENV ECTO_IPV6 true
 ENV ERL_AFLAGS "-proto_dist inet6_tcp"
