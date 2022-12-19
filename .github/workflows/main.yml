@@ -17,5 +17,5 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - uses: superfly/flyctl-actions/setup-flyctl@master
-        - run: flyctl deploy --remote-only --build-args MARLEY_SECRETS_KEY="${{ secrets.MARLEY_SECRETS_KEY }}"
+        - run: flyctl deploy --remote-only --build-arg MARLEY_SECRETS_KEY="${{ secrets.MARLEY_SECRETS_KEY }}"
 
