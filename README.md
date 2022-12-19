@@ -1,5 +1,8 @@
 # Marley Spoon challenge
 
+![Build and test](https://github.com/johnjocoo/effective-octo-umbrella/actions/workflows/test.yml/badge.svg)
+![Deployed to Fly.io](https://github.com/johnjocoo/effective-octo-umbrella/actions/workflows/main.yml/badge.svg)
+
 ## Developing
 
 Requires Elixir >= 1.13 and OTP >= 24

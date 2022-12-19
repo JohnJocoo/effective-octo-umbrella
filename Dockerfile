@@ -19,7 +19,7 @@ ARG DEBIAN_VERSION=bullseye-20220801-slim
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
-ARG MARLEY_SECRETS_KEY=""
+ARG MARLEY_SECRETS_KEY
 
 FROM ${BUILDER_IMAGE} as builder
 
@@ -40,13 +40,14 @@ ENV MIX_ENV="prod"
 # install mix dependencies
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only $MIX_ENV
-RUN sh -c 'echo $MARLEY_SECRETS_KEY | mix secrex.decrypt'
+
 RUN mkdir config
 
 # copy compile-time config files before we compile dependencies
 # to ensure any relevant config change will trigger the dependencies
 # to be re-compiled.
-COPY config/config.exs config/${MIX_ENV}.exs config/${MIX_ENV}.secrets.exs config/
+COPY config/config.exs config/${MIX_ENV}.exs config/${MIX_ENV}.secrets.exs.enc config/
+RUN sh -c 'echo ${MARLEY_SECRETS_KEY} | mix secrex.decrypt'
 RUN mix deps.compile
 
 COPY priv priv
